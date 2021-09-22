@@ -98,8 +98,8 @@ python main.py --MAX_LENGTH 4000 --bidirectional --n_epochs 50 --batch_size 16 -
 |CAML| 89.5 | 98.6 | 8.8 | 53.9 | 70.9 | 56.1 |
 |MultiResCNN| 91.0 | 98.6 | 8.5 | 55.2 | 73.4 | 58.4 |
 |LAAT| 91.9 | 98.8 | 9.9 | 57.5 | 73.8 | 59.1 |
-|JointLAAT| 92.1 | 98.8 | 10.7 | 57.5 | 73.5 | 59.0 |
-|[MARN](https://drive.google.com/file/d/1wwOdb8PDC1N0eOJUP3y4cJ2h6WLZHwjI/view?usp=sharing)    | **91.3** | **98.8** | **11.6** | **58.4** | **75.4** | **60.2** |
+|JointLAAT| **92.1** | 98.8 | 10.7 | 57.5 | 73.5 | 59.0 |
+|[MARN](https://drive.google.com/file/d/1wwOdb8PDC1N0eOJUP3y4cJ2h6WLZHwjI/view?usp=sharing)    | 91.3 | **98.8** | **11.6** | **58.4** | **75.4** | **60.2** |
 
 ### MIMIC-III-50 (CCS)
 
