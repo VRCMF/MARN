@@ -1,10 +1,11 @@
-# Multitask Recalibrated Aggregation Network for Medical Code Prediction (MT-RAM)
-To reproduce the results of the paper [Multitask Recalibrated Aggregation Network](https://arxiv.org/abs/2104.00952), we present this code repository.
+# Multitask Recalibrated Aggregation Network for Medical Code Prediction (MARN)
+To reproduce the results of the paper [Multitask Balanced and Recalibrated Network for Medical Code Prediction](https://arxiv.org/abs/2109.02418), we present this code repository.
 
 ## Highlight
 
 - **Code Associations** The multi-task learning scheme to capture the relationship between different medical codes. 
 - **Recalibrate Feature** The designed Recalibrated Attention Module (RAM) reduce the effect of noise in clinical documents. Also, RAM could alleviate the lengthy document problem by iterative convolution. 
+- **Label balanced** The focal loss (FL) dynamically redistributes the weight between low- and high-frequency codes
 - **Extensible** The multi-task learning framework could be extended to multiple (>= 3) medical coding task, such as HCC coding task and CPT coding task. 
 
 # Package Dependencies
@@ -57,9 +58,12 @@ data
 |   D_ICD_PROCEDURES.csv
 |   ICD9_descriptions.txt (for DR_CAML)
 └───mimic3/
-|   |   dev_50.csv
-|   |   train_50.csv
-|   |   test_50.csv
+|   |   dev_50_m.csv
+|   |   train_50_m.csv
+|   |   test_50_m.csv
+|   |   dev_full_m.csv
+|   |   train_full_m.csv
+|   |   test_full_m.csv
 |   |   dx2015.csv
 |   |   pr2015.csv
 |   |   NOTEEVENTS.csv
@@ -71,46 +75,57 @@ use the script ```python ICD2CCS.py``` to obtain CCS labels and attach them on c
 
 ## Training
 
-#### MT-RAM
+#### MARN
 ~~~
-python main.py --MAX_LENGTH 2500 --n_epochs 50 --batch_size 16 --model GRU --lr 8e-3 --MTL Yes --loss_weight_CCS 0.3
-~~~
-#### CAML + MTL + RAM
-~~~
-python main.py --MAX_LENGTH 2500 --n_epochs 50 --batch_size 16 --model caml --lr 8e-3 --MTL Yes --loss_weight_CCS 0.3
-~~~
-#### MultiResCNN + MTL + RAM
-~~~
-python main.py --MAX_LENGTH 2500 --n_epochs 50 --batch_size 16 --model MultiResCNN --lr 8e-3 --MTL Yes --loss_weight_CCS 0.3
+python main.py --MAX_LENGTH 4000 --bidirectional --n_epochs 50 --batch_size 16 --model GRU --lr 1e-3 --MTL Yes --loss_weight_CCS 0.3 --RAM --task ICD9
 ~~~
 
 ## Main Results (all evaluation results are presented in %)
-### MIMIC-III (ICD)
+### MIMIC-III-50 (ICD)
 
-| Models     |  Macro AUC-ROC |  Micro AUC-ROC | Macro F1 | Micro F1 |  Precision at 5 | Model |
+| Models     |  Macro AUC-ROC |  Micro AUC-ROC | Macro F1 | Micro F1 |  Precision at 5 |
+|--------------|-----------|-----------|-----------|--------------|-----------------------|
+|CAML | 91.4 | 93.8 | 62.5 | 68.7 | 65.3 |
+|MultiResCNN| 91.7 | 93.9 | 64.1 | 69.0 | 65.0 |
+|LAAT| 92.5 | 94.6 | 66.6 | 71.5 | **67.5**|
+|JointLAAT| 92.5 | 94.6 | 66.1 | 71.6 | 67.1 |
+|[MARN](https://drive.google.com/file/d/1oiiXfw9sn3b21nfqpQSIovxRXLhgMrxZ/view?usp=sharing)    | **92.7** | **94.7** | **68.2** | **71.8** | 67.3 |
+
+### MIMIC-III-full (ICD)
+
+| Models     |  Macro AUC-ROC |  Micro AUC-ROC | Macro F1 | Micro F1 |  Precision at 8  |  Precision at 15  |
 |--------------|-----------|-----------|-----------|--------------|-----------------------|-----|
-|CAML + MTL + RAM | 91.4 | 93.8 | 62.5 | 68.7 | 65.3 | [CAML](https://drive.google.com/file/d/1f2E3nJO9C9spFujQTWALpRZMFR0hkjxg/view?usp=sharing) |
-|MultiResCNN + MTL + RAM | 91.7 | 93.9 | 64.1 | 69.0 | 65.0 | [MultiResCNN](https://drive.google.com/file/d/18JQ740kIX8zbd6lGIeS5HYUNqbaUJdzd/view?usp=sharing) |
-|MT-RAM    | 92.1 | 94.3 | 65.1 | 70.6 | 66.4 | [MT-RAM](https://drive.google.com/file/d/1-8TMF0qt2IJhYQnnQC7oCXh8LCdd_-Me/view?usp=sharing) |
+|CAML| 89.5 | 98.6 | 8.8 | 53.9 | 70.9 | 56.1 |
+|MultiResCNN| 91.0 | 98.6 | 8.5 | 55.2 | 73.4 | 58.4 |
+|LAAT| 91.9 | 98.8 | 9.9 | 57.5 | 73.8 | 59.1 |
+|JointLAAT| 92.1 | 98.8 | 10.7 | 57.5 | 73.5 | 59.0 |
+|[MARN](https://drive.google.com/file/d/1wwOdb8PDC1N0eOJUP3y4cJ2h6WLZHwjI/view?usp=sharing)    | **91.3** | **98.8** | **11.6** | **58.4** | **75.4** | **60.2** |
 
-### MIMIC-III (CCS)
+### MIMIC-III-50 (CCS)
 
-| Models     |  Macro AUC-ROC |  Micro AUC-ROC | Macro F1 | Micro F1 |  Precision at 5 |Model |
+| Models     |  Macro AUC-ROC |  Micro AUC-ROC | Macro F1 | Micro F1 |  Precision at 5 |
+|--------------|-----------|-----------|-----------|--------------|-----------------------|
+|CAML | 89.2 | 92.2 | 60.9 | 67.5 | 64.5 |
+|MultiResCNN | 89.2 | 92.4 | 62.9 | 68.8 | 64.6 |
+|[MARN](https://drive.google.com/file/d/1oiiXfw9sn3b21nfqpQSIovxRXLhgMrxZ/view?usp=sharing)   | **92.8** |  **95.0** |	 **71.2**	|  **75.0**	|  **69.0** |
+
+### MIMIC-III-full (CCS)
+
+| Models     |  Macro AUC-ROC |  Micro AUC-ROC | Macro F1 | Micro F1 |  Precision at 8  |  Precision at 15  |
 |--------------|-----------|-----------|-----------|--------------|-----------------------|-----|
-|CAML + MTL + RAM | 91.5 | 94.2 |	66.9 | 72.8	| 67.5 |[CAML](https://drive.google.com/file/d/1f2E3nJO9C9spFujQTWALpRZMFR0hkjxg/view?usp=sharing) |
-|MultiResCNN + MTL + RAM | 91.7	| 94.3 | 67.8 |	72.7 | 67.3 |[MultiResCNN](https://drive.google.com/file/d/18JQ740kIX8zbd6lGIeS5HYUNqbaUJdzd/view?usp=sharing) |
-|MT-RAM    |92.2 | 94.6 |	69.3	| 74.3	| 68.3 |[MT-RAM](https://drive.google.com/file/d/1-8TMF0qt2IJhYQnnQC7oCXh8LCdd_-Me/view?usp=sharing) |
+|CAML| 88.8 | 96.1 | 44.4 | 66.5 | 80.5 | 63.6 |
+|MultiResCNN| 90.6 | 96.5 | 50.8 | 69.0 | 81.8 | 64.8 |
+|[MARN](https://drive.google.com/file/d/1wwOdb8PDC1N0eOJUP3y4cJ2h6WLZHwjI/view?usp=sharing)    |  **93.9** |  **97.4** |  **58.6** |  **72.2** |  **84.3** |  **67.2** |
 
 ## Citation
 If you find that our code is helpful, please use the Bibtex citation shown below.
 
-    @article{sun2021multitask,
-    title={Multitask Recalibrated Aggregation Network for Medical Code Prediction},
-    author={Sun, Wei and Ji, Shaoxiong and Cambria, Erik and Marttinen, Pekka},
-    journal={arXiv preprint arXiv:2104.00952},
-    year={2021}
+    @article{sun2021multi,
+      title={Multi-task Balanced and Recalibrated Network for Medical Code Prediction},
+      author={Sun, Wei and Ji, Shaoxiong and Cambria, Erik and Marttinen, Pekka},
+      journal={arXiv preprint arXiv:2109.02418},
+      year={2021}
     }
 
 ## Acknowledgement
 We appreciate for all code providers, especially for [MultiResCNN](https://github.com/foxlf823/Multi-Filter-Residual-Convolutional-Neural-Network), [CAML](https://github.com/jamesmullenbach/caml-mimic) and [CCS](https://www.hcup-us.ahrq.gov/toolssoftware/ccs/ccs.jsp).
-# MARN
