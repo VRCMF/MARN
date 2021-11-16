@@ -77,7 +77,7 @@ use the script ```python ICD2CCS.py``` to obtain CCS labels and attach them on c
 
 #### MARN
 ~~~
-python main.py --MAX_LENGTH 4000 --bidirectional --n_epochs 50 --batch_size 16 --model GRU --lr 1e-3 --MTL Yes --loss_weight_CCS 0.3 --RAM --task ICD9
+python main.py --MAX_LENGTH 4000 --bidirectional --n_epochs 50 --batch_size 16 --model GRU --lr 1e-3 --MTL Yes --loss_weight_CCS 0.3 --RAM --task ICD9 --reduce
 ~~~
 
 ## Main Results (all evaluation results are presented in %)
