@@ -50,7 +50,7 @@ Running the ```python preprocess_mimic3.py``` obtain corresponding ICD code file
 ### Obtain CCS dataset
 
 Clinical Classifications Software (CCS) for ICD-9-CM is a tool from HCUP.
-Next, download the ```dx2015.csv``` and ```pr2015.csv``` from [web](https://www.hcup-us.ahrq.gov/toolssoftware/ccs/Single_Level_CCS_2015.zip). Place two file in the data, the structure is shown like this:
+Next, download the zip package from [web](https://www.hcup-us.ahrq.gov/toolssoftware/ccs/Single_Level_CCS_2015.zip) and unzip the file. Rename the ```$dxref 2015.csv``` and ```$prref 2015.csv``` as ```dx2015.csv``` and ```pr2015.csv```, respectively. Place two file in the data, the structure is shown like this:
 
 ```
 data
