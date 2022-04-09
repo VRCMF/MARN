@@ -1,4 +1,4 @@
-# Multitask Recalibrated Aggregation Network for Medical Code Prediction (MARN)
+# Multitask Balanced and Recalibrated Network for Medical Code Prediction (MARN)
 To reproduce the results of the paper [Multitask Balanced and Recalibrated Network for Medical Code Prediction](https://arxiv.org/abs/2109.02418), we present this code repository.
 
 ## Highlight
