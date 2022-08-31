@@ -123,7 +123,7 @@ If you find that our code is helpful, please use the Bibtex citation shown below
     @article{sun2021multi,
       title={Multi-task Balanced and Recalibrated Network for Medical Code Prediction},
       author={Sun, Wei and Ji, Shaoxiong and Cambria, Erik and Marttinen, Pekka},
-      journal={arXiv preprint arXiv:2109.02418},
+      journal={ACM Transactions on Intelligent Systems and Technology},
       year={2021}
     }
 
